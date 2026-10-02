@@ -1,0 +1,29 @@
+---
+import { cta, site } from "../data/site";
+import Icon from "./Icon.astro";
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = "Comencemos por una conversación.",
+  text = "Una primera reunión para entender la necesidad y definir por dónde empezar. Sin compromiso.",
+} = Astro.props;
+---
+
+<section id="reunion" class="dark-panel noise scroll-mt-20">
+  <div class="cta-orb" aria-hidden="true"></div>
+  <div class="grid-bg grid-bg--center opacity-60" aria-hidden="true"></div>
+  <div class="shell relative py-24 md:py-32 text-center">
+    <h2 class="display-1 max-w-3xl mx-auto" data-reveal="0">{title}</h2>
+    <p class="lead mt-6 max-w-xl mx-auto" data-reveal="90">{text}</p>
+    <div class="mt-10 flex flex-wrap justify-center gap-3" data-reveal="180">
+      <a href={cta.href} class="btn btn-light" data-magnetic>
+        {cta.label}
+        <Icon name="arrow" size={16} class="arrow" />
+      </a>
+      <a href={`mailto:${site.email}`} class="btn btn-ghost">{site.email}</a>
+    </div>
+  </div>
+</section>

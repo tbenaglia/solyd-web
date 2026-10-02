@@ -1,0 +1,79 @@
+---
+import { Image } from "astro:assets";
+import lockup from "../assets/solyd-lockup-white.png";
+import { nav, cta } from "../data/site";
+import Icon from "./Icon.astro";
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || path === href.replace(/\/$/, "");
+---
+
+<header class="site-header">
+  <div class="shell flex items-center justify-between gap-6 py-4">
+    <a href="/" class="flex items-center shrink-0" aria-label="SOLYD — inicio">
+      <Image src={lockup} alt="SOLYD" width={420} class="h-7 w-auto md:h-8" loading="eager" />
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-8" aria-label="Principal">
+      {
+        nav.map((item) => (
+          <a href={item.href} class="nav-link" aria-current={isCurrent(item.href) ? "page" : undefined}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="hidden lg:block">
+      <a href={cta.href} class="btn btn-light !py-3 !px-5">
+        {cta.label}
+        <Icon name="arrow" size={16} class="arrow" />
+      </a>
+    </div>
+
+    <button
+      id="burger"
+      class="burger lg:hidden grid gap-[4px] p-2 -mr-2"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div id="mobile-nav" class="mobile-panel lg:hidden">
+    <div>
+      <div class="shell pb-6 pt-1">
+        <nav class="grid gap-1 border-t border-white/15 pt-4" aria-label="Principal (mobile)">
+          {
+            nav.map((item) => (
+              <a href={item.href} class="py-2.5 text-[1.05rem] font-medium text-white/90">
+                {item.label}
+              </a>
+            ))
+          }
+          <a href={cta.href} class="btn btn-light mt-4 w-full">
+            {cta.label}
+            <Icon name="arrow" size={16} class="arrow" />
+          </a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  const siteHeader = document.querySelector(".site-header");
+  const burger = document.getElementById("burger");
+  const panel = document.getElementById("mobile-nav");
+  const toggleMenu = (open) => {
+    panel.classList.toggle("open", open);
+    burger.classList.toggle("open", open);
+    siteHeader.classList.toggle("is-open", open);
+    burger.setAttribute("aria-expanded", String(open));
+    burger.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+  };
+  burger?.addEventListener("click", () => toggleMenu(!panel.classList.contains("open")));
+  panel?.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => toggleMenu(false)));
+</script>

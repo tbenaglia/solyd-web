@@ -1,0 +1,149 @@
+---
+/* Ilustración animada de solyd.dev: el código se escribe y el tablero responde. */
+---
+
+<div class="stage vd" aria-hidden="true">
+  <div class="vd-code">
+    <div class="vd-bar"><i></i><i></i><i></i><span>integracion.ts</span></div>
+    <pre><span class="ln" style="--l:0"><em>// corrida diaria</em></span>
+<span class="ln" style="--l:1"><b>const</b> pedidos = <b>await</b> erp.<u>pedidos</u>(&#123; estado: <s>"habilitado"</s> &#125;);</span>
+<span class="ln" style="--l:2"><b>const</b> plan = <u>planificar</u>(pedidos, stock, capacidad);</span>
+<span class="ln" style="--l:3"><b>await</b> tablero.<u>publicar</u>(plan);</span>
+<span class="ln" style="--l:4"><b>await</b> informes.<u>enviar</u>(<s>"operaciones"</s>);<i class="caret"></i></span></pre>
+  </div>
+
+  <div class="vd-dash">
+    <div class="vd-dash-head"><span class="pulse-dot"></span>Tablero · en línea</div>
+    <div class="vd-bars">
+      {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => <i style={`--i:${i}`} />)}
+    </div>
+    <ul>
+      <li style="--r:0"><span></span>Pedidos sincronizados</li>
+      <li style="--r:1"><span></span>Plan publicado</li>
+      <li style="--r:2"><span></span>Informe enviado</li>
+    </ul>
+  </div>
+</div>
+
+<style>
+  .vd { position: relative; padding-bottom: 158px; }
+
+  .vd-code {
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(1, 1, 30, 0.72);
+    box-shadow: 0 30px 60px -40px #000;
+    overflow: hidden;
+  }
+  .vd-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .vd-bar i { width: 9px; height: 9px; border-radius: 99px; background: rgba(255, 255, 255, 0.22); }
+  .vd-bar span { margin-left: 8px; font-size: 0.72rem; letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.5); }
+
+  .vd-code pre {
+    margin: 0;
+    padding: 18px 18px 22px;
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: clamp(0.66rem, 0.95vw, 0.8rem);
+    line-height: 1.95;
+    color: rgba(255, 255, 255, 0.86);
+    white-space: pre;
+    overflow: hidden;
+  }
+  .vd-code em { font-style: normal; color: rgba(255, 255, 255, 0.4); }
+  .vd-code b { font-weight: 500; color: #a995ff; }
+  .vd-code u { text-decoration: none; color: var(--c); }
+  .vd-code s { text-decoration: none; color: #ffd28a; }
+
+  .ln {
+    display: inline-block;
+    clip-path: inset(0 100% 0 0);
+    animation: vd-type 10s steps(42, end) infinite;
+    animation-delay: calc(var(--l) * 0.85s);
+  }
+  @keyframes vd-type {
+    0% { clip-path: inset(0 100% 0 0); }
+    9%, 86% { clip-path: inset(0 -6px 0 0); }
+    90%, 100% { clip-path: inset(0 100% 0 0); }
+  }
+  .caret {
+    display: inline-block;
+    width: 7px; height: 1.1em;
+    margin-left: 3px;
+    vertical-align: -0.2em;
+    background: var(--c);
+    animation: vd-blink 0.9s steps(2) infinite;
+  }
+  @keyframes vd-blink { 50% { opacity: 0; } }
+
+  .vd-dash {
+    position: absolute;
+    right: -6px;
+    bottom: 0;
+    width: min(60%, 264px);
+    padding: 16px 18px 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: color-mix(in srgb, var(--c) 14%, rgba(8, 8, 80, 0.92));
+    backdrop-filter: blur(10px);
+    box-shadow: 0 30px 60px -30px #000;
+    animation: vd-float 6s ease-in-out infinite alternate;
+  }
+  @media (max-width: 639px) {
+    .vd { padding-bottom: 0; }
+    .vd-dash { position: relative; right: auto; width: auto; margin: -14px 0 0 26px; }
+  }
+  @keyframes vd-float { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+
+  .vd-dash-head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .vd-bars { display: flex; align-items: flex-end; gap: 7px; height: 54px; margin-top: 14px; }
+  .vd-bars i {
+    flex: 1;
+    height: 100%;
+    border-radius: 4px 4px 2px 2px;
+    background: linear-gradient(180deg, var(--c), color-mix(in srgb, var(--c) 30%, transparent));
+    transform-origin: 50% 100%;
+    animation: vd-bar 2.6s var(--ease) infinite alternate;
+    animation-delay: calc(var(--i) * -0.41s);
+  }
+  @keyframes vd-bar { from { transform: scaleY(0.22); } to { transform: scaleY(1); } }
+
+  .vd-dash ul { display: grid; gap: 7px; margin-top: 14px; }
+  .vd-dash li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.86);
+    animation: vd-row 10s var(--ease) infinite;
+    animation-delay: calc(3.6s + var(--r) * 0.7s);
+    opacity: 0;
+  }
+  .vd-dash li span {
+    width: 14px; height: 14px;
+    border-radius: 99px;
+    background: var(--c);
+    clip-path: polygon(14% 52%, 40% 76%, 86% 22%, 96% 32%, 40% 96%, 4% 62%);
+  }
+  @keyframes vd-row {
+    0% { opacity: 0; transform: translateX(-8px); }
+    6%, 52% { opacity: 1; transform: none; }
+    58%, 100% { opacity: 0; transform: translateX(-8px); }
+  }
+</style>

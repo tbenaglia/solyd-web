@@ -1,0 +1,208 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import Icon from "../components/Icon.astro";
+import { site, steps, units } from "../data/site";
+
+const hasEndpoint = Boolean(site.formEndpoint);
+---
+
+<Base
+  title="Contacto — SOLYD"
+  description="Una primera reunión para entender la necesidad y definir por dónde empezar: operaciones, software o diseño digital."
+>
+  <PageHero
+    eyebrow="Contacto"
+    title="Comencemos por una conversación."
+    text="Describa brevemente qué necesita: ordenar la operación, desarrollar una herramienta o diseñar un sitio. Primero entendemos, después proponemos."
+  />
+
+  <section class="section !pt-4 rule-top relative overflow-hidden">
+    <div class="shell relative pt-16">
+      <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+        <!-- Formulario -->
+        <div class="card !p-7 md:!p-9 card--flat" data-reveal="0">
+          <form
+            id="contact-form"
+            method={hasEndpoint ? "POST" : undefined}
+            action={hasEndpoint ? site.formEndpoint : undefined}
+            class="grid gap-5"
+          >
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label class="label" for="nombre">Nombre y apellido</label>
+                <input class="field" id="nombre" name="nombre" type="text" required autocomplete="name" placeholder="Nombre y apellido" />
+              </div>
+              <div>
+                <label class="label" for="empresa">Empresa</label>
+                <input class="field" id="empresa" name="empresa" type="text" required autocomplete="organization" placeholder="Nombre de la empresa" />
+              </div>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label class="label" for="email">Correo electrónico</label>
+                <input class="field" id="email" name="email" type="email" required autocomplete="email" placeholder="nombre@empresa.com" />
+              </div>
+              <div>
+                <label class="label" for="telefono">Teléfono <span class="muted font-normal">(opcional)</span></label>
+                <input class="field" id="telefono" name="telefono" type="tel" autocomplete="tel" placeholder="+54 9 11 ..." />
+              </div>
+            </div>
+
+            <div>
+              <label class="label" for="area">Área de interés</label>
+              <select class="field" id="area" name="area">
+                <option value="">Aún no lo definimos</option>
+                {units.map((u) => <option value={`solyd.${u.id}`}>solyd.{u.id} — {u.kicker}</option>)}
+              </select>
+            </div>
+
+            <div>
+              <label class="label" for="mensaje">Consulta</label>
+              <textarea
+                class="field"
+                id="mensaje"
+                name="mensaje"
+                rows="5"
+                required
+                placeholder="Describa la situación o el proyecto, y qué resultado espera."
+              ></textarea>
+            </div>
+
+            <!-- anti-spam: campo oculto que sólo completan los bots -->
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+            <div class="flex flex-wrap items-center gap-4 pt-1">
+              <button type="submit" class="btn btn-primary">
+                Enviar consulta
+                <Icon name="arrow" size={16} class="arrow" />
+              </button>
+              <p class="text-[0.85rem] muted">Respondemos dentro de las 48 horas hábiles.</p>
+            </div>
+
+            <p id="form-msg" class="hidden text-[0.92rem] font-medium"></p>
+          </form>
+        </div>
+
+        <!-- Datos + próximos pasos -->
+        <div class="grid gap-5 h-fit" data-reveal="100">
+          <div class="card card--flat">
+            <h2 class="display-3">Contacto directo</h2>
+            <ul class="grid gap-3.5 mt-5 text-[0.97rem]">
+              {
+                site.email && (
+                  <li class="flex items-center gap-3">
+                    <span class="icon-tile !w-9 !h-9"><Icon name="mail" size={17} /></span>
+                    <a href={`mailto:${site.email}`} class="hover:text-[color:var(--color-electric)] transition-colors">
+                      {site.email}
+                    </a>
+                  </li>
+                )
+              }
+              {
+                site.phone && (
+                  <li class="flex items-center gap-3">
+                    <span class="icon-tile !w-9 !h-9"><Icon name="phone" size={17} /></span>
+                    <a href={`tel:${site.phone}`} class="hover:text-[color:var(--color-electric)] transition-colors">
+                      {site.phoneLabel || site.phone}
+                    </a>
+                  </li>
+                )
+              }
+              <li class="flex items-center gap-3">
+                <span class="icon-tile !w-9 !h-9"><Icon name="pin" size={17} /></span>
+                {site.location}
+              </li>
+              {
+                site.linkedin && (
+                  <li class="flex items-center gap-3">
+                    <span class="icon-tile !w-9 !h-9"><Icon name="linkedin" size={17} /></span>
+                    <a href={site.linkedin} rel="noopener" class="hover:text-[color:var(--color-electric)] transition-colors">
+                      LinkedIn
+                    </a>
+                  </li>
+                )
+              }
+            </ul>
+          </div>
+
+          <div class="card card--flat">
+            <h2 class="display-3">Próximos pasos</h2>
+            <ol class="grid gap-4 mt-5">
+              {
+                steps.slice(0, 3).map((s) => (
+                  <li class="flex gap-4">
+                    <span class="step-num !text-[1.5rem] leading-none pt-0.5">{s.n}</span>
+                    <div>
+                      <p class="font-semibold text-[0.98rem]">{s.title}</p>
+                      <p class="ink-2 text-[0.9rem] mt-1 leading-relaxed">{s.text}</p>
+                    </div>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline define:vars={{ hasEndpoint, email: site.email }}>
+    const form = document.getElementById("contact-form");
+    const msg = document.getElementById("form-msg");
+
+    const show = (text, ok) => {
+      msg.textContent = text;
+      msg.className = `text-[0.92rem] font-medium ${ok ? "text-[color:var(--color-electric)]" : "text-[#c0392b]"}`;
+    };
+
+    form?.addEventListener("submit", async (e) => {
+      if (form.querySelector('[name="_gotcha"]').value) {
+        e.preventDefault();
+        return;
+      }
+
+      // Sin endpoint configurado: se abre el cliente de correo del visitante con la consulta cargada.
+      if (!hasEndpoint) {
+        e.preventDefault();
+        const d = new FormData(form);
+        const body = [
+          `Nombre: ${d.get("nombre")}`,
+          `Empresa: ${d.get("empresa")}`,
+          `Email: ${d.get("email")}`,
+          `Teléfono: ${d.get("telefono") || "-"}`,
+          `Área de interés: ${d.get("area") || "-"}`,
+          "",
+          d.get("mensaje"),
+        ].join("\n");
+        window.location.href = `mailto:${email}?subject=${encodeURIComponent(
+          "Consulta desde solyd.com.ar — " + d.get("empresa")
+        )}&body=${encodeURIComponent(body)}`;
+        show("Se abrió su cliente de correo con la consulta lista para enviar.", true);
+        return;
+      }
+
+      // Con endpoint: envío por fetch para no salir de la página.
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.style.opacity = "0.6";
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        if (!res.ok) throw new Error("error");
+        form.reset();
+        show("Consulta recibida. Respondemos a la brevedad.", true);
+      } catch {
+        show(`No fue posible enviar el formulario. Puede escribirnos a ${email}.`, false);
+      } finally {
+        btn.disabled = false;
+        btn.style.opacity = "1";
+      }
+    });
+  </script>
+</Base>

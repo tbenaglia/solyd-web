@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://solyd.com.ar/sitemap-index.xml

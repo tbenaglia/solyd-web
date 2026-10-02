@@ -1,0 +1,19 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  text?: string;
+}
+const { eyebrow, title, text } = Astro.props;
+---
+
+<section class="dark-panel noise page-hero">
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <div class="shell relative pt-16 pb-14 md:pt-24 md:pb-20">
+    <p class="eyebrow" data-reveal="0">{eyebrow}</p>
+    <h1 class="display-2 mt-5 max-w-4xl" data-reveal="80">{title}</h1>
+    {text && <p class="lead mt-6 max-w-2xl" data-reveal="160">{text}</p>}
+    <slot />
+  </div>
+</section>

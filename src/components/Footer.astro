@@ -1,0 +1,97 @@
+---
+import { Image } from "astro:assets";
+import lockup from "../assets/solyd-lockup-white.png";
+import mark from "../assets/solyd-mark-white.png";
+import { site, nav, cta } from "../data/site";
+import Icon from "./Icon.astro";
+
+const year = new Date().getFullYear();
+const links = nav;
+---
+
+<footer class="dark-panel dark-panel--flat noise">
+  <div class="absolute inset-0 opacity-[0.06] pointer-events-none flex justify-end items-center pr-[-40px]">
+    <Image src={mark} alt="" width={420} class="w-[340px] translate-x-16 -rotate-6" aria-hidden="true" />
+  </div>
+
+  <div class="shell relative py-16 md:py-20">
+    <div class="grid gap-12 md:grid-cols-[1.4fr_1fr_1.2fr]">
+      <div>
+        <Image src={lockup} alt="SOLYD" width={420} class="h-8 w-auto" />
+        <p class="mt-5 text-[0.78rem] uppercase tracking-[0.22em] text-white/50 font-medium">
+          {site.tagline}
+        </p>
+        <p class="lead mt-5 max-w-sm text-[1rem]">
+          Consultoría de operaciones, desarrollo de software y diseño digital en un mismo equipo.
+        </p>
+      </div>
+
+      <nav aria-label="Pie de página">
+        <p class="text-[0.72rem] uppercase tracking-[0.2em] text-white/45 font-semibold mb-4">Sitio</p>
+        <ul class="grid gap-2.5">
+          {
+            links.map((l) => (
+              <li>
+                <a href={l.href} class="text-white/78 hover:text-white transition-colors text-[0.97rem]">
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div>
+        <p class="text-[0.72rem] uppercase tracking-[0.2em] text-white/45 font-semibold mb-4">Contacto</p>
+        <ul class="grid gap-3 text-[0.97rem] text-white/78">
+          {
+            site.email && (
+              <li class="flex items-center gap-2.5">
+                <Icon name="mail" size={17} class="text-[color:var(--color-cyan)] shrink-0" />
+                <a href={`mailto:${site.email}`} class="hover:text-white transition-colors">
+                  {site.email}
+                </a>
+              </li>
+            )
+          }
+          {
+            site.phone && (
+              <li class="flex items-center gap-2.5">
+                <Icon name="phone" size={17} class="text-[color:var(--color-cyan)] shrink-0" />
+                <a href={`tel:${site.phone}`} class="hover:text-white transition-colors">
+                  {site.phoneLabel || site.phone}
+                </a>
+              </li>
+            )
+          }
+          <li class="flex items-center gap-2.5">
+            <Icon name="pin" size={17} class="text-[color:var(--color-cyan)] shrink-0" />
+            {site.location}
+          </li>
+          {
+            site.linkedin && (
+              <li class="flex items-center gap-2.5">
+                <Icon name="linkedin" size={17} class="text-[color:var(--color-cyan)] shrink-0" />
+                <a href={site.linkedin} class="hover:text-white transition-colors" rel="noopener">
+                  LinkedIn
+                </a>
+              </li>
+            )
+          }
+        </ul>
+
+        <a href={cta.href} class="btn btn-ghost mt-6">
+          {cta.label}
+          <Icon name="arrow" size={16} class="arrow" />
+        </a>
+      </div>
+    </div>
+
+    <div
+      class="mt-14 pt-6 border-t border-white/12 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between text-[0.82rem] text-white/45"
+    >
+      <p>© {year} SOLYD. Todos los derechos reservados.</p>
+      <p>{site.tagline}</p>
+    </div>
+  </div>
+</footer>

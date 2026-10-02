@@ -1,0 +1,160 @@
+---
+import "@fontsource-variable/inter";
+import "@fontsource-variable/space-grotesk";
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = `${site.name} — Consulting, Dev y Design`,
+  description = site.description,
+  image = "/og-image.jpg",
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+const ogImage = new URL(image, Astro.site ?? site.url).href;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: site.name,
+  url: site.url,
+  logo: new URL("/favicon.png", site.url).href,
+  description: site.description,
+  slogan: site.tagline,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Buenos Aires",
+    addressCountry: "AR",
+  },
+  ...(site.email ? { email: site.email } : {}),
+  ...(site.linkedin ? { sameAs: [site.linkedin] } : {}),
+};
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="512x512" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#02026C" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_AR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+
+  <body>
+    <a href="#main" class="sr-only focus:not-sr-only">Saltar al contenido</a>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script is:inline>
+      // Header compacto y barra de avance al hacer scroll
+      const header = document.querySelector(".site-header");
+      const progress = document.querySelector(".scroll-progress");
+      const onScroll = () => {
+        header?.classList.toggle("is-stuck", window.scrollY > 12);
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        progress?.style.setProperty("--p", String(max > 0 ? window.scrollY / max : 0));
+      };
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      // Botones magnéticos: siguen al cursor dentro de su área
+      if (window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches) {
+        document.querySelectorAll("[data-magnetic]").forEach((el) => {
+          el.addEventListener("pointermove", (e) => {
+            const r = el.getBoundingClientRect();
+            const x = (e.clientX - r.left - r.width / 2) * 0.22;
+            const y = (e.clientY - r.top - r.height / 2) * 0.34;
+            el.style.transform = `translate(${x}px, ${y}px)`;
+          });
+          el.addEventListener("pointerleave", () => (el.style.transform = ""));
+        });
+      }
+
+      // Aparición progresiva de secciones
+      const reveals = document.querySelectorAll("[data-reveal]");
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                const delay = Number(e.target.getAttribute("data-reveal")) || 0;
+                setTimeout(() => e.target.classList.add("in"), delay);
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { rootMargin: "0px 0px -12% 0px", threshold: 0.08 }
+        );
+        reveals.forEach((el) => io.observe(el));
+      } else {
+        reveals.forEach((el) => el.classList.add("in"));
+      }
+
+      // Contadores de la franja de métricas
+      const counters = document.querySelectorAll("[data-count]");
+      if (counters.length && "IntersectionObserver" in window) {
+        const co = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (!e.isIntersecting) return;
+              const el = e.target;
+              const target = Number(el.getAttribute("data-count"));
+              if (Number.isNaN(target)) return co.unobserve(el);
+              el.textContent = "0";
+              const dur = 1100;
+              const t0 = performance.now();
+              const tick = (t) => {
+                const p = Math.min(1, (t - t0) / dur);
+                const eased = 1 - Math.pow(1 - p, 3);
+                el.textContent = String(Math.round(target * eased));
+                if (p < 1) requestAnimationFrame(tick);
+              };
+              requestAnimationFrame(tick);
+              // Garantía: si el navegador frena la animación, el número final igual queda.
+              setTimeout(() => (el.textContent = String(target)), dur + 500);
+              co.unobserve(el);
+            });
+          },
+          { threshold: 0.5 }
+        );
+        counters.forEach((el) => co.observe(el));
+      }
+    </script>
+  </body>
+</html>

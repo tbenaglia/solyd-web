@@ -1,0 +1,26 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import { cta } from "../data/site";
+---
+
+<Base title="Página no encontrada — SOLYD" description="La página solicitada no existe.">
+  <section class="dark-panel noise page-hero">
+    <div class="grid-bg" aria-hidden="true"></div>
+
+    <div class="shell relative py-28 md:py-36 text-center">
+      <p class="eyebrow eyebrow--plain justify-center">Error 404</p>
+      <h1 class="display-1 mt-6">Esta página <span class="grad-text">no existe</span>.</h1>
+      <p class="lead mt-6 max-w-lg mx-auto">
+        Es posible que el enlace haya cambiado o que el contenido se haya movido.
+      </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <a href="/" class="btn btn-light">
+          Ir al inicio
+          <Icon name="arrow" size={16} class="arrow" />
+        </a>
+        <a href={cta.href} class="btn btn-ghost">{cta.label}</a>
+      </div>
+    </div>
+  </section>
+</Base>

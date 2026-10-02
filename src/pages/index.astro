@@ -1,0 +1,394 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import CTASection from "../components/CTASection.astro";
+import VisualConsulting from "../components/VisualConsulting.astro";
+import VisualDev from "../components/VisualDev.astro";
+import VisualDesign from "../components/VisualDesign.astro";
+import { site, cta, units, keywords, steps, manifesto, sectors } from "../data/site";
+---
+
+<Base title="SOLYD — Consulting, Dev y Design" description={site.description}>
+  <!-- ============================================================ HERO -->
+  <section class="hero" style={`--accent:${units[0].tint}`}>
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+    <div class="shell hero-body">
+      <p class="eyebrow" data-reveal="0">{site.tagline}</p>
+
+      <p class="wordmark" aria-hidden="true" data-reveal="80">
+        <span>solyd</span><span class="roll"><span class="roll-track" id="roll">{units.map((u) => <span style={`--c:${u.tint}`}>.{u.id}</span>)}</span></span>
+      </p>
+
+      <h1 class="hero-title" data-reveal="180">
+        Operación, tecnología y diseño, <span class="grad-text">en un mismo equipo</span>.
+      </h1>
+
+      <p class="lead mt-6 max-w-xl" data-reveal="240">
+        Rediseñamos procesos, desarrollamos el software que los sostiene y diseñamos la experiencia
+        digital que los comunica.
+      </p>
+
+      <div class="mt-9 flex flex-wrap gap-3" data-reveal="300">
+        <a href={cta.href} class="btn btn-light" data-magnetic>
+          {cta.label}
+          <Icon name="arrow" size={16} class="arrow" />
+        </a>
+        <a href="#unidades" class="btn btn-ghost">
+          Conocer las unidades
+          <Icon name="arrow" size={16} class="arrow" />
+        </a>
+      </div>
+    </div>
+
+    <div class="shell hero-tabs-in">
+      <nav class="hero-tabs" aria-label="Unidades de SOLYD">
+        {
+          units.map((u, i) => (
+            <a href={`#${u.id}`} class:list={["hero-tab", { "is-active": i === 0 }]} data-tint={u.tint} style={`--c:${u.tint}`}>
+              <span class="hero-tab-n">0{i + 1}</span>
+              <span class="hero-tab-name">solyd<b>.{u.id}</b></span>
+              <span class="hero-tab-text">{u.short}</span>
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+  </section>
+
+  <!-- ================================================== FRANJA CINÉTICA -->
+  <section class="kinetic" aria-hidden="true">
+    {
+      keywords.map((row, r) => (
+        <div class:list={["kinetic-row", { "kinetic-row--rev": r % 2 === 1 }]}>
+          {[0, 1].map(() => (
+            <div class="kinetic-track">
+              {row.map((w, i) => (
+                <span class:list={["w", { o: i % 2 === 1 }]}>
+                  {w}
+                  <i />
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      ))
+    }
+  </section>
+
+  <!-- ======================================================== UNIDADES -->
+  <section id="unidades" class="section relative scroll-mt-10">
+    <div class="shell">
+      <div class="max-w-2xl" data-reveal="0">
+        <p class="eyebrow">Tres unidades</p>
+        <h2 class="display-2 mt-5">Un equipo, tres formas de trabajar con su empresa.</h2>
+        <p class="lead mt-5">
+          Cada unidad trabaja de forma independiente o en conjunto con las otras. Juntas cubren el
+          recorrido completo: del proceso a la herramienta y a la experiencia.
+        </p>
+      </div>
+
+      <div class="units mt-14">
+        {
+          units.map((u, i) => (
+            <article id={u.id} class="unit" style={`--i:${i};--c:${u.tint}`}>
+              <div class="unit-copy">
+                <p class="unit-kicker">0{i + 1} — {u.kicker}</p>
+                <h3 class="unit-name">solyd<span>.{u.id}</span></h3>
+                <p class="unit-title">{u.title}</p>
+                <p class="unit-text">{u.text}</p>
+                <ul class="unit-items">
+                  {u.items.map((it) => (
+                    <li>
+                      <strong>{it.title}</strong>
+                      <span>{it.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div class="unit-visual">
+                {u.id === "consulting" && <VisualConsulting />}
+                {u.id === "dev" && <VisualDev />}
+                {u.id === "design" && <VisualDesign />}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================= MANIFIESTO -->
+  <section class="section manifesto">
+    <div class="shell">
+      <p class="eyebrow" data-reveal="0">Por qué un mismo equipo</p>
+      <p class="manifesto-text" id="manifesto">{manifesto}</p>
+    </div>
+  </section>
+
+  <!-- ================================================== CÓMO TRABAJAMOS -->
+  <section id="como-trabajamos" class="section rule-top scroll-mt-10">
+    <div class="shell">
+      <div class="max-w-2xl" data-reveal="0">
+        <p class="eyebrow">Cómo trabajamos</p>
+        <h2 class="display-2 mt-5">Un método en cuatro etapas.</h2>
+        <p class="lead mt-5">El mismo recorrido en las tres unidades. Cada etapa habilita a la siguiente.</p>
+      </div>
+
+      <div class="process mt-14" id="process">
+        <div class="process-line" aria-hidden="true"><i></i></div>
+        <ol class="process-steps">
+          {
+            steps.map((s) => (
+              <li class="process-step">
+                <span class="process-node" aria-hidden="true" />
+                <span class="step-num">{s.n}</span>
+                <h3 class="mt-4 text-[1.12rem] font-semibold">{s.title}</h3>
+                <p class="ink-2 text-[0.95rem] mt-2.5 leading-relaxed">{s.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="mt-14 flex flex-wrap items-center gap-3" data-reveal="120">
+        <span class="text-[0.8rem] uppercase tracking-[0.18em] muted font-semibold mr-2">Sectores</span>
+        {sectors.map((s) => <span class="chip">{s}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</Base>
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ------------------------------------------------ Hero: unidad activa */
+  const hero = document.querySelector<HTMLElement>(".hero")!;
+  const track = document.getElementById("roll")!;
+  const tabs = [...document.querySelectorAll<HTMLElement>(".hero-tab")];
+  const tints = tabs.map((t) => t.dataset.tint!);
+  const DUR = 3800;
+  let active = 0;
+  let t0 = performance.now();
+  let held = false;
+
+  const hexToRgb = (hex: string) => {
+    const n = parseInt(hex.slice(1), 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  };
+  let target = hexToRgb(tints[0]);
+  const color = [...target];
+
+  const setActive = (i: number) => {
+    active = i;
+    t0 = performance.now();
+    target = hexToRgb(tints[i]);
+    track.style.transform = `translateY(${(-i * 100) / tabs.length}%)`;
+    hero.style.setProperty("--accent", tints[i]);
+    tabs.forEach((t, k) => {
+      t.classList.toggle("is-active", k === i);
+      t.style.setProperty("--p", "0");
+    });
+  };
+
+  tabs.forEach((t, i) => {
+    const hold = () => {
+      held = true;
+      if (active !== i) setActive(i);
+      t.style.setProperty("--p", "1");
+    };
+    const release = () => {
+      held = false;
+      t0 = performance.now();
+    };
+    t.addEventListener("pointerenter", hold);
+    t.addEventListener("focus", hold);
+    t.addEventListener("pointerleave", release);
+    t.addEventListener("blur", release);
+  });
+
+  /* ------------------------------------------- Hero: retícula animada */
+  const canvas = document.getElementById("hero-canvas") as HTMLCanvasElement;
+  const ctx = canvas.getContext("2d")!;
+  const GAP = 46;
+  let w = 0;
+  let h = 0;
+  let mx = -9999;
+  let my = -9999;
+  let heroVisible = true;
+
+  const resize = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.clientWidth;
+    h = canvas.clientHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
+  resize();
+  window.addEventListener("resize", resize);
+
+  hero.addEventListener("pointermove", (e) => {
+    const r = canvas.getBoundingClientRect();
+    mx = e.clientX - r.left;
+    my = e.clientY - r.top;
+  });
+  hero.addEventListener("pointerleave", () => {
+    mx = my = -9999;
+  });
+
+  const drawField = (time: number) => {
+    const t = time * 0.00042;
+    ctx.clearRect(0, 0, w, h);
+    const cols = Math.ceil(w / GAP) + 2;
+    const rows = Math.ceil(h / GAP) + 2;
+    const rgb = `${color[0] | 0},${color[1] | 0},${color[2] | 0}`;
+    let prevRow: number[] = [];
+
+    for (let j = 0; j < rows; j++) {
+      const row: number[] = [];
+      let px = 0;
+      let py = 0;
+      let pn = 0;
+      for (let i = 0; i < cols; i++) {
+        const wave =
+          Math.sin(i * 0.34 + t * 2.1) + Math.cos(j * 0.42 - t * 1.7) + Math.sin((i + j) * 0.21 + t * 1.3);
+        let x = i * GAP - GAP / 2 + Math.cos(wave) * 9;
+        let y = j * GAP - GAP / 2 + Math.sin(wave * 1.3) * 9;
+        const dx = x - mx;
+        const dy = y - my;
+        const d = Math.hypot(dx, dy) || 1;
+        const near = Math.max(0, 1 - d / 210);
+        x += (dx / d) * near * 16;
+        y += (dy / d) * near * 16;
+        const lift = (wave + 3) / 6;
+
+        // trama: une cada punto con el anterior y con el de arriba
+        const la = 0.05 + lift * 0.1 + near * 0.45;
+        ctx.strokeStyle = `rgba(${rgb},${la})`;
+        ctx.lineWidth = 1;
+        if (i > 0) {
+          ctx.beginPath();
+          ctx.moveTo(px, py);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+        }
+        if (j > 0) {
+          ctx.beginPath();
+          ctx.moveTo(prevRow[i * 2], prevRow[i * 2 + 1]);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+        }
+
+        ctx.fillStyle = `rgba(${rgb},${0.22 + lift * 0.5 + Math.max(near, pn) * 0.3})`;
+        ctx.beginPath();
+        ctx.arc(x, y, 1.2 + lift * 1.3 + near * 2, 0, 6.2832);
+        ctx.fill();
+
+        row.push(x, y);
+        px = x;
+        py = y;
+        pn = near;
+      }
+      prevRow = row;
+    }
+  };
+
+  new IntersectionObserver(([e]) => (heroVisible = e.isIntersecting)).observe(hero);
+
+  const loop = (now: number) => {
+    if (!held && !reduce) {
+      const p = Math.min(1, (now - t0) / DUR);
+      tabs[active].style.setProperty("--p", String(p));
+      if (p >= 1) setActive((active + 1) % tabs.length);
+    }
+    if (heroVisible && !document.hidden) {
+      for (let k = 0; k < 3; k++) color[k] += (target[k] - color[k]) * 0.05;
+      drawField(reduce ? 0 : now);
+    }
+    if (!reduce) requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+
+  /* ------------------------------ Ilustraciones: animar sólo si se ven */
+  const stages = document.querySelectorAll(".stage");
+  const stageIO = new IntersectionObserver(
+    (entries) => entries.forEach((e) => e.target.classList.toggle("is-live", e.isIntersecting)),
+    { threshold: 0.15 }
+  );
+  stages.forEach((s) => stageIO.observe(s));
+
+  /* ------------------------------------------- Manifiesto: por palabra */
+  const man = document.getElementById("manifesto")!;
+  const words = man.textContent!.trim().split(/\s+/);
+  man.textContent = "";
+  const spans = words.map((word) => {
+    const s = document.createElement("span");
+    s.textContent = word;
+    man.append(s, " ");
+    return s;
+  });
+  if (reduce) spans.forEach((s) => s.classList.add("on"));
+
+  /* --------------------------------------------- Efectos ligados al scroll */
+  const rows = [...document.querySelectorAll<HTMLElement>(".kinetic-row")];
+  const cards = [...document.querySelectorAll<HTMLElement>(".unit")];
+  const process = document.getElementById("process")!;
+  const stepsEl = [...process.querySelectorAll(".process-step")];
+  const stackMq = window.matchMedia("(min-width: 1024px) and (min-height: 760px)");
+  const clamp = (v: number) => Math.max(0, Math.min(1, v));
+
+  const onScroll = () => {
+    const vh = window.innerHeight;
+
+    // franja: se desplaza con el scroll, cada fila en un sentido
+    const shift = window.scrollY * 0.12;
+    rows.forEach((r, i) => r.style.setProperty("--shift", `${i % 2 ? shift : -shift}px`));
+
+    // tarjetas apiladas: la anterior se achica cuando la siguiente la cubre
+    cards.forEach((c, i) => {
+      const next = cards[i + 1];
+      if (!next || !stackMq.matches) {
+        c.style.setProperty("--s", "1");
+        c.style.setProperty("--dim", "0");
+        return;
+      }
+      const top = c.getBoundingClientRect().top;
+      const cover = clamp((top + c.offsetHeight - next.getBoundingClientRect().top) / c.offsetHeight);
+      c.style.setProperty("--s", String(1 - cover * 0.055));
+      c.style.setProperty("--dim", String(cover * 0.5));
+    });
+
+    // manifiesto
+    if (!reduce) {
+      const r = man.getBoundingClientRect();
+      const p = clamp((vh * 0.82 - r.top) / (r.height + vh * 0.36));
+      const lit = p * spans.length;
+      spans.forEach((s, i) => s.classList.toggle("on", i < lit));
+    }
+
+    // método
+    const pr = process.getBoundingClientRect();
+    const pp = reduce ? 1 : clamp((vh * 0.78 - pr.top) / (pr.height + vh * 0.2));
+    process.style.setProperty("--p", String(pp));
+    stepsEl.forEach((s, i) => s.classList.toggle("on", pp > (i + 0.35) / stepsEl.length));
+  };
+
+  let ticking = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        onScroll();
+        ticking = false;
+      });
+    },
+    { passive: true }
+  );
+  window.addEventListener("resize", onScroll);
+  onScroll();
+</script>

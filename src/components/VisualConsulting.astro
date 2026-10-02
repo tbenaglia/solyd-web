@@ -1,0 +1,122 @@
+---
+/* Ilustración animada de solyd.consulting: un pedido recorre el proceso y los indicadores responden. */
+const path =
+  "M80 82 H468 Q498 82 498 112 V152 Q498 182 468 182 H52 Q22 182 22 212 V252 Q22 282 52 282 H80";
+const nodes = [
+  { x: 80, y: 82, label: "Pedido", k: 0 },
+  { x: 240, y: 82, label: "Stock", k: 1 },
+  { x: 400, y: 82, label: "Crédito", k: 2 },
+  { x: 400, y: 182, label: "Planificación", k: 3 },
+  { x: 240, y: 182, label: "Ruteo", k: 4 },
+  { x: 80, y: 182, label: "Despacho", k: 5 },
+  { x: 80, y: 282, label: "Entrega", k: 6 },
+];
+---
+
+<div class="stage vc" aria-hidden="true">
+  <svg viewBox="0 0 520 380" fill="none">
+    <path d={path} class="vc-rail" />
+    <path d={path} class="vc-flow" id="vc-path" />
+
+    <circle r="5" class="vc-dot">
+      <animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#vc-path" /></animateMotion>
+    </circle>
+    <circle r="5" class="vc-dot vc-dot--b">
+      <animateMotion dur="7s" begin="-3.5s" repeatCount="indefinite"><mpath href="#vc-path" /></animateMotion>
+    </circle>
+
+    {
+      nodes.map((n) => (
+        <g class="vc-node" style={`--k:${n.k}`}>
+          <rect x={n.x - 58} y={n.y - 21} width="116" height="42" rx="12" />
+          <text x={n.x} y={n.y + 4.5} text-anchor="middle">{n.label}</text>
+        </g>
+      ))
+    }
+
+    <!-- Indicadores -->
+    <g class="vc-kpi">
+      <rect x="168" y="236" width="330" height="126" rx="16" />
+      <text x="188" y="264" class="vc-kpi-label">Costo por entrega</text>
+      <path d="M188 292 C218 286 232 300 262 296 S306 306 322 300" class="vc-line vc-line--down" pathLength="1" />
+      <text x="352" y="264" class="vc-kpi-label">Nivel de servicio</text>
+      <path d="M352 304 C376 300 388 290 412 292 S452 276 478 274" class="vc-line vc-line--up" pathLength="1" />
+      <g class="vc-bars">
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => (
+          <rect x={188 + i * 25} y="322" width="15" height="24" rx="3" style={`--i:${i}`} />
+        ))}
+      </g>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .vc svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+  .vc-rail { stroke: rgba(255, 255, 255, 0.12); stroke-width: 2; }
+  .vc-flow {
+    stroke: var(--c);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 5 11;
+    animation: vc-dash 1.4s linear infinite;
+  }
+  @keyframes vc-dash { to { stroke-dashoffset: -16; } }
+
+  .vc-dot { fill: #fff; filter: drop-shadow(0 0 7px var(--c)) drop-shadow(0 0 14px var(--c)); }
+
+  .vc-node rect {
+    fill: #0b0b62;
+    stroke: rgba(255, 255, 255, 0.2);
+    stroke-width: 1.2;
+    animation: vc-node 7s linear infinite;
+    animation-delay: calc(var(--k) * 0.96s - 7s);
+  }
+  .vc-node text {
+    fill: #fff;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  @keyframes vc-node {
+    0%, 3% { stroke: rgba(255, 255, 255, 0.2); fill: #0b0b62; }
+    6%, 14% { stroke: var(--c); fill: color-mix(in srgb, var(--c) 34%, #0b0b62); }
+    24%, 100% { stroke: rgba(255, 255, 255, 0.2); fill: #0b0b62; }
+  }
+
+  .vc-kpi > rect { fill: rgba(255, 255, 255, 0.05); stroke: rgba(255, 255, 255, 0.14); }
+  .vc-kpi-label {
+    fill: rgba(255, 255, 255, 0.6);
+    font-family: var(--font-display);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .vc-line {
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    animation: vc-draw 7s var(--ease) infinite;
+  }
+  .vc-line--down { stroke: #fff; }
+  .vc-line--up { stroke: var(--c); animation-delay: 0.5s; }
+  @keyframes vc-draw {
+    0% { stroke-dashoffset: 1; }
+    34%, 88% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: 1; }
+  }
+
+  .vc-bars rect {
+    fill: rgba(255, 255, 255, 0.2);
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: vc-bar 3.2s var(--ease) infinite alternate;
+    animation-delay: calc(var(--i) * -0.27s);
+  }
+  .vc-bars rect:nth-child(3n) { fill: var(--c); }
+  @keyframes vc-bar {
+    from { transform: scaleY(0.3); }
+    to { transform: scaleY(1); }
+  }
+</style>
