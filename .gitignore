@@ -10,3 +10,4 @@ npm-debug.log*
 
 # Material interno que no forma parte del sitio
 _archivo/
+dist-preview/

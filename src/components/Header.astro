@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import lockup from "../assets/solyd-lockup-white.png";
-import { nav, cta } from "../data/site";
+import { nav, cta, url } from "../data/site";
 import Icon from "./Icon.astro";
 
 const path = Astro.url.pathname;
@@ -10,7 +10,7 @@ const isCurrent = (href: string) => path === href || path === href.replace(/\/$/
 
 <header class="site-header">
   <div class="shell flex items-center justify-between gap-6 py-4">
-    <a href="/" class="flex items-center shrink-0" aria-label="SOLYD — inicio">
+    <a href={url("/")} class="flex items-center shrink-0" aria-label="SOLYD — inicio">
       <Image src={lockup} alt="SOLYD" width={420} class="h-7 w-auto md:h-8" loading="eager" />
     </a>
 

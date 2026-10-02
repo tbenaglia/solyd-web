@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
-import { cta } from "../data/site";
+import { cta, url } from "../data/site";
 ---
 
 <Base title="Página no encontrada — SOLYD" description="La página solicitada no existe.">
@@ -15,7 +15,7 @@ import { cta } from "../data/site";
         Es posible que el enlace haya cambiado o que el contenido se haya movido.
       </p>
       <div class="mt-9 flex flex-wrap justify-center gap-3">
-        <a href="/" class="btn btn-light">
+        <a href={url("/")} class="btn btn-light">
           Ir al inicio
           <Icon name="arrow" size={16} class="arrow" />
         </a>

@@ -22,17 +22,24 @@ export const site = {
   formEndpoint: "",
 };
 
+/**
+ * Antepone la ruta base a un enlace interno.
+ * En solyd.com.ar la base es "/"; cambia sólo en copias publicadas bajo una subcarpeta.
+ */
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+export const url = (path: string) => `${base}${path}`;
+
 export const nav = [
-  { href: "/#consulting", label: "Consulting" },
-  { href: "/#dev", label: "Dev" },
-  { href: "/#design", label: "Design" },
-  { href: "/#como-trabajamos", label: "Cómo trabajamos" },
-  { href: "/contacto/", label: "Contacto" },
+  { href: url("/#consulting"), label: "Consulting" },
+  { href: url("/#dev"), label: "Dev" },
+  { href: url("/#design"), label: "Design" },
+  { href: url("/#como-trabajamos"), label: "Cómo trabajamos" },
+  { href: url("/contacto/"), label: "Contacto" },
 ];
 
 export const cta = {
   label: "Coordinar una reunión",
-  href: "/contacto/",
+  href: url("/contacto/"),
 };
 
 /* ---------------------------------------------------------------- Unidades */
