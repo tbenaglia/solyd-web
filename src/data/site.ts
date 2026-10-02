@@ -15,11 +15,12 @@ export const site = {
   location: "Buenos Aires, Argentina",
   linkedin: "",
   /**
-   * Endpoint del formulario de contacto.
-   * Pegá acá tu URL de Formspree (https://formspree.io/f/xxxxxx) o Web3Forms.
+   * Endpoint del formulario de contacto: las consultas llegan por mail a la casilla indicada.
+   * Hoy usa FormSubmit (sin cuenta; la casilla se activa una sola vez desde un mail de confirmación).
+   * También acepta una URL de Formspree (https://formspree.io/f/xxxxxx).
    * Si queda vacío, el formulario abre el mail del visitante como fallback.
    */
-  formEndpoint: "",
+  formEndpoint: "https://formsubmit.co/ajax/info@solyd.com.ar",
 };
 
 /**

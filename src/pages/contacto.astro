@@ -71,7 +71,11 @@ const hasEndpoint = Boolean(site.formEndpoint);
             </div>
 
             <!-- anti-spam: campo oculto que sólo completan los bots -->
-            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+            <!-- opciones del servicio de envío -->
+            <input type="hidden" name="_subject" value="Consulta desde solyd.com.ar" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
 
             <div class="flex flex-wrap items-center gap-4 pt-1">
               <button type="submit" class="btn btn-primary">
@@ -158,7 +162,7 @@ const hasEndpoint = Boolean(site.formEndpoint);
     };
 
     form?.addEventListener("submit", async (e) => {
-      if (form.querySelector('[name="_gotcha"]').value) {
+      if (form.querySelector('[name="_honey"]').value) {
         e.preventDefault();
         return;
       }
@@ -194,9 +198,11 @@ const hasEndpoint = Boolean(site.formEndpoint);
           body: new FormData(form),
           headers: { Accept: "application/json" },
         });
-        if (!res.ok) throw new Error("error");
+        // El servicio responde 200 también cuando rechaza el envío: se mira el campo "success".
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || String(data.success) === "false") throw new Error(data.message || "error");
         form.reset();
-        show("Consulta recibida. Respondemos a la brevedad.", true);
+        show("Consulta enviada. Respondemos dentro de las 48 horas hábiles.", true);
       } catch {
         show(`No fue posible enviar el formulario. Puede escribirnos a ${email}.`, false);
       } finally {
