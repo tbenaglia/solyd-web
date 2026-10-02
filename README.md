@@ -31,13 +31,13 @@ Casi todo el contenido vive en **un solo archivo**: `src/data/site.ts`.
 | Endpoint del formulario de contacto | `src/data/site.ts` → `site.formEndpoint` |
 | Menú de navegación | `src/data/site.ts` → `nav` |
 | Las tres unidades (consulting, dev, design) y sus servicios | `src/data/site.ts` → `units` |
-| Palabras de la franja animada | `src/data/site.ts` → `keywords` |
+| Vocabulario de la trama animada | `src/data/site.ts` → `keywords` |
 | Frase del manifiesto | `src/data/site.ts` → `manifesto` |
-| Los 4 pasos del método | `src/data/site.ts` → `steps` |
+| Los pasos de "Próximos pasos" (contacto) | `src/data/site.ts` → `steps` |
 | Sectores | `src/data/site.ts` → `sectors` |
 | Textos de la portada y del contacto | `src/pages/index.astro` / `src/pages/contacto.astro` |
 | Colores, tipografías, tarjetas, botones | `src/styles/global.css` |
-| Animaciones de la portada (hero, franja, tarjetas apiladas, método) | `src/styles/motion.css` y el `<script>` de `src/pages/index.astro` |
+| Animaciones de la portada (hero, trama, tarjetas apiladas, manifiesto) | `src/styles/motion.css` y el `<script>` de `src/pages/index.astro` |
 | Ilustraciones animadas de cada unidad | `src/components/Visual*.astro` |
 | Logos de SOLYD y de clientes | `src/assets/` |
 | Favicon, imagen para redes, robots.txt | `public/` |

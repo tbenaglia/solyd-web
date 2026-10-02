@@ -1,13 +1,13 @@
 ---
-/* Ilustración animada de solyd.consulting: un pedido recorre el proceso y los indicadores responden. */
+/* Ilustración animada de solyd.consulting: la demanda recorre la cadena de suministro y los indicadores responden. */
 const path =
   "M80 82 H468 Q498 82 498 112 V152 Q498 182 468 182 H52 Q22 182 22 212 V252 Q22 282 52 282 H80";
 const nodes = [
-  { x: 80, y: 82, label: "Pedido", k: 0 },
-  { x: 240, y: 82, label: "Stock", k: 1 },
-  { x: 400, y: 82, label: "Crédito", k: 2 },
-  { x: 400, y: 182, label: "Planificación", k: 3 },
-  { x: 240, y: 182, label: "Ruteo", k: 4 },
+  { x: 80, y: 82, label: "Forecast", k: 0 },
+  { x: 240, y: 82, label: "S&OP", k: 1 },
+  { x: 400, y: 82, label: "MRP", k: 2 },
+  { x: 400, y: 182, label: "Producción", k: 3 },
+  { x: 240, y: 182, label: "Inventario", k: 4 },
   { x: 80, y: 182, label: "Despacho", k: 5 },
   { x: 80, y: 282, label: "Entrega", k: 6 },
 ];
@@ -37,9 +37,9 @@ const nodes = [
     <!-- Indicadores -->
     <g class="vc-kpi">
       <rect x="168" y="236" width="330" height="126" rx="16" />
-      <text x="188" y="264" class="vc-kpi-label">Costo por entrega</text>
+      <text x="188" y="264" class="vc-kpi-label">Costo logístico</text>
       <path d="M188 292 C218 286 232 300 262 296 S306 306 322 300" class="vc-line vc-line--down" pathLength="1" />
-      <text x="352" y="264" class="vc-kpi-label">Nivel de servicio</text>
+      <text x="352" y="264" class="vc-kpi-label">OTIF</text>
       <path d="M352 304 C376 300 388 290 412 292 S452 276 478 274" class="vc-line vc-line--up" pathLength="1" />
       <g class="vc-bars">
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => (

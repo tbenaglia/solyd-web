@@ -8,7 +8,7 @@ export const site = {
   tagline: "Engineering Business Transformation",
   url: "https://solyd.com.ar",
   description:
-    "Consultoría de operaciones, desarrollo de software y diseño digital en un mismo equipo. Rediseñamos procesos, construimos la tecnología que los sostiene y diseñamos la experiencia que los comunica.",
+    "Consultoría en supply chain y operaciones industriales, desarrollo de software y diseño digital, con equipos integrados. Rediseñamos procesos, construimos la tecnología que los sostiene y diseñamos la experiencia que los comunica.",
   email: "info@solyd.com.ar",
   phone: "",
   phoneLabel: "",
@@ -33,7 +33,6 @@ export const nav = [
   { href: url("/#consulting"), label: "Consulting" },
   { href: url("/#dev"), label: "Dev" },
   { href: url("/#design"), label: "Design" },
-  { href: url("/#como-trabajamos"), label: "Cómo trabajamos" },
   { href: url("/contacto/"), label: "Contacto" },
 ];
 
@@ -51,17 +50,17 @@ export const cta = {
 export const units = [
   {
     id: "consulting",
-    kicker: "Ingeniería de operaciones",
-    short: "Procesos, costos, planificación y logística.",
-    title: "Ordenamos cómo funciona la empresa.",
-    text: "Relevamos la operación real, identificamos dónde se pierde tiempo, dinero o control, y rediseñamos el proceso con reglas, responsables e indicadores.",
+    kicker: "Supply chain y operaciones industriales",
+    short: "S&OP, inventarios, logística y costos.",
+    title: "Ingeniería de operaciones para la cadena de suministro.",
+    text: "Analizamos la operación de punta a punta —demanda, abastecimiento, producción, inventario y distribución— y rediseñamos procesos, políticas e indicadores para mejorar nivel de servicio, costo y capital de trabajo.",
     accent: "#3d5afe",
     tint: "#7d92ff",
     items: [
-      { title: "Procesos y operación", text: "Relevamiento y rediseño de la forma de trabajar." },
-      { title: "Costos y rentabilidad", text: "Costo real de cada operación y márgenes por producto, cliente o canal." },
-      { title: "Planificación y stock", text: "Proyección de demanda, reposición y niveles de inventario." },
-      { title: "Logística y depósitos", text: "Almacenamiento, preparación y distribución." },
+      { title: "Planificación S&OP", text: "Pronóstico de demanda, plan maestro de producción y balance de capacidad." },
+      { title: "Inventarios y abastecimiento", text: "Políticas de reposición, stock de seguridad y compras." },
+      { title: "Logística y almacenes", text: "Layout de depósitos, ruteo, transporte y nivel de servicio (OTIF)." },
+      { title: "Costos y rentabilidad", text: "Costo industrial y logístico; márgenes por producto, cliente y canal." },
     ],
   },
   {
@@ -84,7 +83,7 @@ export const units = [
     kicker: "Estudio de diseño digital",
     short: "Sitios web, interfaces y motion.",
     title: "Diseñamos la experiencia que lo comunica.",
-    text: "Un estudio de diseño dentro de un equipo de ingeniería. Sitios web, interfaces y productos digitales diseñados y desarrollados por las mismas personas.",
+    text: "Un estudio de diseño integrado a equipos de ingeniería. Sitios web, interfaces y productos digitales que se diseñan y se desarrollan en conjunto.",
     accent: "#7b5cff",
     tint: "#a995ff",
     items: [
@@ -96,13 +95,21 @@ export const units = [
   },
 ] as const;
 
-/** Palabras de la franja animada, por unidad. */
+/** Vocabulario de la trama animada bajo la portada. */
 export const keywords = [
-  ["Procesos", "Costos", "Planificación", "Logística", "Software", "Integraciones"],
-  ["Tableros", "Automatización", "IA", "Sitios web", "Interfaces", "Motion"],
+  "S&OP", "MRP", "MPS", "OTIF", "fill rate", "lead time", "safety stock", "forecast accuracy",
+  "demand planning", "ATP", "OEE", "throughput", "takt time", "bottleneck", "capacidad", "WMS",
+  "TMS", "ERP", "cross-docking", "picking", "slotting", "last mile", "ruteo", "flota",
+  "costo estándar", "activity-based costing", "margen", "working capital", "inventario", "rotación",
+  "abastecimiento", "procurement", "BOM", "lote", "trazabilidad", "KPI", "dashboard", "API",
+  "ETL", "SQL", "Python", "TypeScript", "webhook", "pipeline", "data model", "automation",
+  "LLM", "agents", "integración", "backend", "frontend", "real-time", "alertas", "reporting",
+  "UX", "UI", "wireframe", "prototype", "design system", "grid", "typography", "motion",
+  "interaction", "layout", "componentes", "deploy", "CI/CD", "cloud", "Lean", "Six Sigma",
+  "kaizen", "5S", "VSM", "root cause", "SLA", "backlog", "sprint", "nivel de servicio",
 ] as const;
 
-/* --------------------------------------------------------- Cómo trabajamos */
+/* ------------------------------ Próximos pasos (página de contacto) */
 
 export const steps = [
   {
@@ -128,6 +135,6 @@ export const steps = [
 ] as const;
 
 export const manifesto =
-  "Una solución sin proceso no sirve. Un proceso sin solución es difícil de sostener. Por eso quienes piensan el proceso, construyen el software y diseñan la experiencia son el mismo equipo.";
+  "Una solución sin proceso no sirve. Un proceso sin solución es difícil de sostener. Por eso el proceso, el software y la experiencia se piensan con equipos integrados, desde el primer día.";
 
 export const sectors = ["Agroindustria", "Logística y distribución", "Industria"] as const;

@@ -154,46 +154,43 @@
   .hero-tab-text { display: none; }
 }
 
-/* ---------- Franja cinética ---------- */
+/* ---------- Trama técnica ---------- */
 
-.kinetic {
+.weave {
+  position: relative;
   overflow: hidden;
-  padding-block: clamp(30px, 4.4vw, 60px);
+  padding-block: clamp(22px, 3vw, 38px);
   border-bottom: 1px solid var(--color-line);
   background: var(--color-surface);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
 }
 
-.kinetic-row {
+.weave-row {
   display: flex;
-  font-family: var(--font-display);
-  font-size: clamp(2.3rem, 6vw, 5.4rem);
-  font-weight: 700;
-  line-height: 1.14;
-  letter-spacing: -0.045em;
+  font-family: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
+  font-size: clamp(0.66rem, 0.9vw, 0.82rem);
+  line-height: 2.05;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   white-space: nowrap;
+  color: color-mix(in srgb, var(--color-navy) 24%, transparent);
   transform: translate3d(var(--shift, 0px), 0, 0);
 }
 
-.kinetic-track {
+.weave-track {
   display: flex;
   flex: none;
-  animation: slide 46s linear infinite;
+  animation: slide calc(150s + var(--r) * 21s) linear infinite;
 }
-.kinetic-row--rev .kinetic-track { animation-direction: reverse; }
+.weave-row:nth-child(even) .weave-track { animation-direction: reverse; }
 
-.kinetic .w { display: inline-flex; align-items: center; color: var(--color-navy); }
-.kinetic .w.o {
-  color: transparent;
-  -webkit-text-stroke: 1.3px color-mix(in srgb, var(--color-navy) 46%, transparent);
-}
-.kinetic .w i {
-  width: 0.34em;
-  height: 0.34em;
-  margin-inline: 0.42em;
-  clip-path: polygon(0 0, 100% 50%, 0 100%, 32% 50%);
-  background: linear-gradient(120deg, var(--color-electric), var(--color-cyan));
-}
-.kinetic-row--rev .w i { background: linear-gradient(120deg, var(--color-violet), var(--color-electric)); }
+.weave-track span { padding-inline: 0.9em; }
+.weave-track span::after { content: "/"; margin-left: 1.8em; opacity: 0.45; }
+.weave-track span.s { color: color-mix(in srgb, var(--color-navy) 62%, transparent); }
+.weave-track span.a { color: var(--color-electric); }
+.weave-row:nth-child(3n + 1) .weave-track span.a { color: var(--color-cyan); }
+.weave-row:nth-child(3n + 2) .weave-track span.a { color: var(--color-violet); }
 
 /* ---------- Unidades: tarjetas apiladas ---------- */
 
@@ -315,59 +312,6 @@
 .manifesto-text span { opacity: 0.14; transition: opacity 0.45s var(--ease); }
 .manifesto-text span.on { opacity: 1; }
 
-/* ---------- Método: línea que avanza con el scroll ---------- */
-
-.process { position: relative; }
-
-.process-line {
-  position: absolute;
-  inset: 5px 0 auto 0;
-  height: 2px;
-  background: var(--color-line);
-}
-.process-line i {
-  display: block;
-  height: 100%;
-  background: linear-gradient(90deg, var(--color-electric), var(--color-cyan), var(--color-violet));
-  transform: scaleX(var(--p, 0));
-  transform-origin: 0 50%;
-}
-
-.process-steps { display: grid; gap: 30px; grid-template-columns: repeat(4, 1fr); }
-
-.process-step {
-  position: relative;
-  padding-top: 38px;
-  transition: opacity 0.6s var(--ease);
-}
-.process-step > :not(.process-node) { opacity: 0.34; transition: opacity 0.6s var(--ease); }
-.process-step.on > * { opacity: 1; }
-
-.process-node {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 12px;
-  height: 12px;
-  border-radius: 99px;
-  background: var(--color-surface);
-  border: 2px solid var(--color-line);
-  transition: border-color 0.5s var(--ease), box-shadow 0.5s var(--ease), background 0.5s var(--ease);
-}
-.process-step.on .process-node {
-  background: var(--color-electric);
-  border-color: var(--color-electric);
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-electric) 16%, transparent);
-}
-
-@media (max-width: 1023px) {
-  .process-line { inset: 0 auto 0 5px; width: 2px; height: auto; }
-  .process-line i { transform: scaleY(var(--p, 0)); transform-origin: 50% 0; }
-  .process-steps { grid-template-columns: 1fr; gap: 34px; }
-  .process-step { padding: 0 0 0 38px; }
-  .process-node { top: 12px; }
-}
-
 /* ---------- Cierre ---------- */
 
 .cta-orb {
@@ -396,6 +340,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .manifesto-text span { opacity: 1; }
-  .process-step > * { opacity: 1; }
   .unit { transform: none; }
 }

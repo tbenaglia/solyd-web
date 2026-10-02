@@ -5,7 +5,15 @@ import CTASection from "../components/CTASection.astro";
 import VisualConsulting from "../components/VisualConsulting.astro";
 import VisualDev from "../components/VisualDev.astro";
 import VisualDesign from "../components/VisualDesign.astro";
-import { site, cta, units, keywords, steps, manifesto, sectors } from "../data/site";
+import { site, cta, units, keywords, manifesto } from "../data/site";
+
+/* Trama: cada fila recorre el vocabulario desde otro punto, para que no se repita en vertical. */
+const ROWS = 8;
+const weave = Array.from({ length: ROWS }, (_, r) => {
+  const k = (r * 23) % keywords.length;
+  return [...keywords.slice(k), ...keywords.slice(0, k)];
+});
+const tone = (r: number, i: number) => ((i * 7 + r * 3) % 13 === 0 ? "a" : (i + r) % 5 === 0 ? "s" : "");
 ---
 
 <Base title="SOLYD — Consulting, Dev y Design" description={site.description}>
@@ -21,7 +29,7 @@ import { site, cta, units, keywords, steps, manifesto, sectors } from "../data/s
       </p>
 
       <h1 class="hero-title" data-reveal="180">
-        Operación, tecnología y diseño, <span class="grad-text">en un mismo equipo</span>.
+        Operaciones, tecnología y diseño, <span class="grad-text">con equipos integrados</span>.
       </h1>
 
       <p class="lead mt-6 max-w-xl" data-reveal="240">
@@ -56,18 +64,15 @@ import { site, cta, units, keywords, steps, manifesto, sectors } from "../data/s
     </div>
   </section>
 
-  <!-- ================================================== FRANJA CINÉTICA -->
-  <section class="kinetic" aria-hidden="true">
+  <!-- ==================================================== TRAMA TÉCNICA -->
+  <section class="weave" aria-hidden="true">
     {
-      keywords.map((row, r) => (
-        <div class:list={["kinetic-row", { "kinetic-row--rev": r % 2 === 1 }]}>
+      weave.map((row, r) => (
+        <div class="weave-row" style={`--r:${r}`}>
           {[0, 1].map(() => (
-            <div class="kinetic-track">
+            <div class="weave-track">
               {row.map((w, i) => (
-                <span class:list={["w", { o: i % 2 === 1 }]}>
-                  {w}
-                  <i />
-                </span>
+                <span class={tone(r, i) || undefined}>{w}</span>
               ))}
             </div>
           ))}
@@ -81,9 +86,9 @@ import { site, cta, units, keywords, steps, manifesto, sectors } from "../data/s
     <div class="shell">
       <div class="max-w-2xl" data-reveal="0">
         <p class="eyebrow">Tres unidades</p>
-        <h2 class="display-2 mt-5">Un equipo, tres formas de trabajar con su empresa.</h2>
+        <h2 class="display-2 mt-5">Tres unidades, equipos integrados.</h2>
         <p class="lead mt-5">
-          Cada unidad trabaja de forma independiente o en conjunto con las otras. Juntas cubren el
+          Cada unidad trabaja de forma independiente o integrada con las otras. Juntas cubren el
           recorrido completo: del proceso a la herramienta y a la experiencia.
         </p>
       </div>
@@ -121,40 +126,8 @@ import { site, cta, units, keywords, steps, manifesto, sectors } from "../data/s
   <!-- ======================================================= MANIFIESTO -->
   <section class="section manifesto">
     <div class="shell">
-      <p class="eyebrow" data-reveal="0">Por qué un mismo equipo</p>
+      <p class="eyebrow" data-reveal="0">Por qué equipos integrados</p>
       <p class="manifesto-text" id="manifesto">{manifesto}</p>
-    </div>
-  </section>
-
-  <!-- ================================================== CÓMO TRABAJAMOS -->
-  <section id="como-trabajamos" class="section rule-top scroll-mt-10">
-    <div class="shell">
-      <div class="max-w-2xl" data-reveal="0">
-        <p class="eyebrow">Cómo trabajamos</p>
-        <h2 class="display-2 mt-5">Un método en cuatro etapas.</h2>
-        <p class="lead mt-5">El mismo recorrido en las tres unidades. Cada etapa habilita a la siguiente.</p>
-      </div>
-
-      <div class="process mt-14" id="process">
-        <div class="process-line" aria-hidden="true"><i></i></div>
-        <ol class="process-steps">
-          {
-            steps.map((s) => (
-              <li class="process-step">
-                <span class="process-node" aria-hidden="true" />
-                <span class="step-num">{s.n}</span>
-                <h3 class="mt-4 text-[1.12rem] font-semibold">{s.title}</h3>
-                <p class="ink-2 text-[0.95rem] mt-2.5 leading-relaxed">{s.text}</p>
-              </li>
-            ))
-          }
-        </ol>
-      </div>
-
-      <div class="mt-14 flex flex-wrap items-center gap-3" data-reveal="120">
-        <span class="text-[0.8rem] uppercase tracking-[0.18em] muted font-semibold mr-2">Sectores</span>
-        {sectors.map((s) => <span class="chip">{s}</span>)}
-      </div>
     </div>
   </section>
 
@@ -333,19 +306,18 @@ import { site, cta, units, keywords, steps, manifesto, sectors } from "../data/s
   if (reduce) spans.forEach((s) => s.classList.add("on"));
 
   /* --------------------------------------------- Efectos ligados al scroll */
-  const rows = [...document.querySelectorAll<HTMLElement>(".kinetic-row")];
+  const rows = [...document.querySelectorAll<HTMLElement>(".weave-row")];
   const cards = [...document.querySelectorAll<HTMLElement>(".unit")];
-  const process = document.getElementById("process")!;
-  const stepsEl = [...process.querySelectorAll(".process-step")];
   const stackMq = window.matchMedia("(min-width: 1024px) and (min-height: 760px)");
   const clamp = (v: number) => Math.max(0, Math.min(1, v));
 
   const onScroll = () => {
     const vh = window.innerHeight;
 
-    // franja: se desplaza con el scroll, cada fila en un sentido
-    const shift = window.scrollY * 0.12;
-    rows.forEach((r, i) => r.style.setProperty("--shift", `${i % 2 ? shift : -shift}px`));
+    // trama: cada fila se desplaza con el scroll a su propia velocidad y sentido
+    rows.forEach((r, i) =>
+      r.style.setProperty("--shift", `${window.scrollY * (0.05 + (i % 3) * 0.035) * (i % 2 ? 1 : -1)}px`)
+    );
 
     // tarjetas apiladas: la anterior se achica cuando la siguiente la cubre
     cards.forEach((c, i) => {
@@ -369,11 +341,6 @@ import { site, cta, units, keywords, steps, manifesto, sectors } from "../data/s
       spans.forEach((s, i) => s.classList.toggle("on", i < lit));
     }
 
-    // método
-    const pr = process.getBoundingClientRect();
-    const pp = reduce ? 1 : clamp((vh * 0.78 - pr.top) / (pr.height + vh * 0.2));
-    process.style.setProperty("--p", String(pp));
-    stepsEl.forEach((s, i) => s.classList.toggle("on", pp > (i + 0.35) / stepsEl.length));
   };
 
   let ticking = false;
